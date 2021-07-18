@@ -1,0 +1,15 @@
+# cloudbuild.yaml
+steps:
+  # build & push the container image
+- name: "gcr.io/kaniko-project/executor:latest"
+  args: ["--cache=true", "--cache-ttl=48h", "--destination=gcr.io/$PROJECT_ID/mybot:latest"]
+  # Deploy container image to Cloud Run
+- name: "gcr.io/cloud-builders/gcloud"
+  args: [
+      'beta', 'run', 'deploy', 'mybot',
+      '--image', 'gcr.io/$PROJECT_ID/mybot:latest',
+      '--allow-unauthenticated',
+      '--platform', 'managed',
+      '--region', 'us-east1',
+      '--project', 'civic-eye-272019'
+  ]
