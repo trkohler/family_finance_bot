@@ -68,7 +68,7 @@ def notion_page_builder(
             },
             "Date": {"date": {"start": datetime.now().isoformat()}, 'type': 'date'},
             "Spent": {'number': -sum_of_spend if spend else sum_of_spend, 'type': 'number'},
-            "For current period": {'number': remain_value, 'type': 'number'} if remain_flag else None,
+            "For current period": {'number': remain_value, 'type': 'number'} if remain_flag else 0,
         },
         children=make_bullet_points(*bullets) if bullets else []
     )._asdict()
@@ -122,13 +122,12 @@ def update_card(card: typing.Dict[str, typing.Any]):
 
 def get_remain_from_res(res: typing.Dict[str, typing.Any]) -> int:
     result = 0
-    remain = True
     try:
         result = int(res["results"][0]["properties"]["Remain"]["formula"]["number"])
-    except KeyError:
-        remain = False
+    except (IndexError, KeyError):
+        pass
 
-    return result, remain
+    return result
 
 
 def main():

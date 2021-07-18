@@ -19,7 +19,7 @@ from notion import (
 )
 
 
-CHAT_ID=test_chat_id
+CHAT_ID=our_home_chat_id
 
 
 def make_notion_card(
@@ -43,8 +43,8 @@ def make_notion_card(
             res = notion.databases.query(
                 **prepare_query_kwargs(title)
             )
-            remain_value, remain_flag = get_remain_from_res(res)
-            remain_flag = type_of_spend["remain"] and remain_flag
+            remain_value = get_remain_from_res(res)
+            remain_flag = type_of_spend["remain"]
 
             notion_page = notion_page_builder(
                 title,
