@@ -1,4 +1,4 @@
-from types import NotionPage, ParentDatabase
+from my_types import NotionPage, ParentDatabase
 import typing
 from datetime import datetime, timedelta
 
