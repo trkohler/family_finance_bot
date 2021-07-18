@@ -19,9 +19,6 @@ from notion import (
 )
 
 
-CHAT_ID=our_home_chat_id
-
-
 def make_notion_card(
         content: str,
         channel_post
@@ -50,9 +47,9 @@ def make_notion_card(
                 title,
                 type_of_spend["id"],
                 int(round(sum_of_spend)),
-                remain_value,
-                tokens[1:],
-                remain_flag
+                remain_value=remain_value,
+                bullets=tokens[1:],
+                remain_flag=remain_flag
             )
             notion.pages.create(**notion_page)
             channel_post.delete()
@@ -82,7 +79,7 @@ def how_many_remain(
                     f"гривен \n"
                 )
     if message:
-        context.bot.send_message(chat_id=CHAT_ID, text=message)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 
 def cleanup_notion(context: CallbackContext):
@@ -91,10 +88,8 @@ def cleanup_notion(context: CallbackContext):
 
 def notion_card_creater(update: Update, context):
     if hasattr(update, "channel_post"):
-        chat_id = update.channel_post.chat_id
-        if chat_id == CHAT_ID:
-            content = update.channel_post.text
-            make_notion_card(content, update.channel_post)
+        content = update.channel_post.text
+        make_notion_card(content, update.channel_post)
 
 # TODO: remove this or do something with it
 def new_period(context: CallbackContext):
@@ -133,7 +128,7 @@ def new_period(context: CallbackContext):
                     result.append(type_of_spend["title"])
     if result:
         context.bot.send_message(
-            CHAT_ID,
+            context.update.effective_chat.id,
             f"Новый период начался по таким категориям: {str(result)}\n"
             f"Экономия должна быть: {ekonomy} гривен"
         )

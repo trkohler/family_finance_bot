@@ -45,6 +45,8 @@ def notion_page_builder(
         bullets: typing.Optional[typing.List[str]],
         spend: typing.Optional[bool] = True, 
 ) -> typing.Dict[str, typing.Any]:
+    if not remain_flag:
+        remain_value = 0
     return NotionPage(
         parent=ParentDatabase(database_id=DATABASE_ID)._asdict(),
         properties={
@@ -68,7 +70,7 @@ def notion_page_builder(
             },
             "Date": {"date": {"start": datetime.now().isoformat()}, 'type': 'date'},
             "Spent": {'number': -sum_of_spend if spend else sum_of_spend, 'type': 'number'},
-            "For current period": {'number': remain_value, 'type': 'number'} if remain_flag else 0,
+            "For current period": {'number': remain_value, 'type': 'number'},
         },
         children=make_bullet_points(*bullets) if bullets else []
     )._asdict()
