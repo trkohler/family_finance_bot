@@ -1,10 +1,11 @@
-from my_types import NotionPage, ParentDatabase
+from utils.my_types import NotionPage, ParentDatabase
 import typing
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from notion_client import Client
 
-from constants import init_headers, DATABASE_ID, notion_secret
+from constants import DATABASE_ID, notion_secret
+from utils.utils import init_headers
 
 headers = init_headers()
 notion = Client(auth=notion_secret)
@@ -106,6 +107,12 @@ def prepare_query_kwargs(tag_name: str):
 
 
 def check_if_card_exist(tag_name: str, date_for_filter: datetime) -> typing.Optional[dict]:
+    """
+    if notion card exists, returns it, else - returns None
+    :param tag_name:
+    :param date_for_filter:
+    :return:
+    """
     res = notion.databases.query(
         database_id=DATABASE_ID,
         filter={"and": [prepare_filter_tags(tag_name), prepare_filter_date(date_for_filter)]},
@@ -119,6 +126,13 @@ def check_if_card_exist(tag_name: str, date_for_filter: datetime) -> typing.Opti
 
 
 def update_card(card: typing.Dict[str, typing.Any]):
+    """
+    I didn't make it because
+    notion api doesn't allow
+    update card yet.
+    :param card:
+    :return:
+    """
     pass
 
 
@@ -130,11 +144,3 @@ def get_remain_from_res(res: typing.Dict[str, typing.Any]) -> int:
         pass
 
     return result
-
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()

@@ -1,5 +1,4 @@
 from envparse import env
-from requests.structures import CaseInsensitiveDict
 
 env.read_envfile()
 notion_secret = env("NOTION_SECRET")
@@ -13,16 +12,6 @@ NOTION_URL_MAP = {
     "query_db": f"https://api.notion.com/v1/databases/{DATABASE_ID}/query",
     "retrieve_db_data": f"https://api.notion.com/v1/databases/{DATABASE_ID}",
 }
-
-
-def init_headers():
-    headers = CaseInsensitiveDict()
-    headers["Accept"] = "application/json"
-    headers["Authorization"] = f"Bearer {notion_secret}"
-    headers["Notion-Version"] = "2021-05-13"
-    headers["Content-Type"] = "application/json"
-    return headers
-
 
 types_of_spends = dict(
     rashodniki=dict(
