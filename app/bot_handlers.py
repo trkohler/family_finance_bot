@@ -14,7 +14,8 @@ from notion import (
     check_if_card_exist,
     notion_page_builder,
     get_remain_from_res,
-    prepare_query_kwargs, notion,
+    prepare_query_kwargs,
+    notion,
 )
 
 
