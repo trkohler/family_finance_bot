@@ -1,4 +1,5 @@
 from difflib import SequenceMatcher
+import logging
 from typing import Optional, Union
 
 from telegram import Message
@@ -7,6 +8,7 @@ from telegram.ext.filters import DataDict
 
 from constants import types_of_spends
 
+logger = logging.getLogger(__name__)
 
 class FilterRemain(MessageFilter):
     def filter(self, message):
@@ -28,7 +30,9 @@ class FilterShowCategories(MessageFilter):
     
     def filter(self, message: Message) -> Optional[Union[bool, DataDict]]:
         content = message.text
+        logger.info("content: %s", content)
         tokens = content.split("\n")
+        logger.info("splitted tokens: %s", tokens)
         if SequenceMatcher(None, tokens[0], "Показать категории").ratio() > 0.6:
             return True
         return False
