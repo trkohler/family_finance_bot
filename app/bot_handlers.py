@@ -50,6 +50,7 @@ def get_converted_remain(sum: float) -> float:
         headers=init_headers_convert_currency(),
         params=querystring
     )
+    logger.info("response: %s", response.json())
 
     amount = response.json()['rates']['EUR']['rate_for_amount']
 
@@ -133,7 +134,7 @@ def how_many_remain(
             
             try:
                 remain_converted = get_converted_remain(remain)
-            except ValueError:
+            except (ValueError, KeyError):
                 logger.error("api returns some bullshit.")
                 message = "конвертер валют вернул какой-то мусор. Конвертация в евро провалилась. :("
                 context.bot.send_message(chat_id=update.effective_chat.id, text=message)
