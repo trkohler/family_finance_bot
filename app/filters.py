@@ -24,6 +24,14 @@ class FilterSpend(MessageFilter):
                 return True
         return False
 
+class FilterShowCategories(MessageFilter):
+    
+    def filter(self, message: Message) -> Optional[Union[bool, DataDict]]:
+        content = message.text
+        if content == "Показать категории":
+            return True
+        return False
 
 filter_remain = FilterRemain()
 filter_spend = FilterSpend()
+filter_show_categories = FilterShowCategories()
