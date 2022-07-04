@@ -143,13 +143,13 @@ def how_many_remain(
             if remain_converted and remain_flag:
                 message += (
                     f"По категории {type_of_spend['title']} "
-                    f"осталось {remain} "
+                    f"осталось {remain_converted} "
                     f"euro \n"
                 )
             elif remain_converted and not remain_flag:
                 message += (
                     f"По категории {type_of_spend['title']} "
-                    f"в этом месяце потрачено {-remain} "
+                    f"в этом месяце потрачено {-remain_converted} "
                     f"euro \n"
                 )
     if message:
