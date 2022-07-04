@@ -28,7 +28,8 @@ class FilterShowCategories(MessageFilter):
     
     def filter(self, message: Message) -> Optional[Union[bool, DataDict]]:
         content = message.text
-        if content == "Показать категории":
+        tokens = content.split("\n")
+        if SequenceMatcher(None, tokens[0], "Показать категории").ratio() > 0.6:
             return True
         return False
 
