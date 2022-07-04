@@ -2,11 +2,6 @@ import http
 import logging
 import os
 
-from firebase_admin import (
-    credentials,
-    initialize_app,
-    firestore,
-)
 from flask import (
     Flask,
     request,
@@ -36,9 +31,6 @@ dispatcher.add_handler(remain_handler)
 dispatcher.add_handler(notion_handler)
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
-cred = credentials.Certificate('key_for_firebase.json')
-default_app = initialize_app(cred)
-db = firestore.client()
 port = int(os.environ.get('PORT', 8080))
 
 

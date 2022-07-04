@@ -3,10 +3,16 @@ from envparse import env
 env.read_envfile()
 notion_secret = env("NOTION_SECRET")
 telegram_token = env('TELEGRAM_TOKEN')
+environment = env('BOT_ENV')
+rapid_api_key = env('RAPID_API_KEY')
+rapid_api_host = env('RAPID_API_HOST')
+
 our_home_chat_id = -1001423120580
 test_chat_id = -1001171091439
 
 DATABASE_ID = "a27c68e4c1d8481c913b2d4fabefc4c9"
+
+RAPID_API_URL = "https://currency-converter5.p.rapidapi.com/currency/convert"
 
 NOTION_URL_MAP = {
     "query_db": f"https://api.notion.com/v1/databases/{DATABASE_ID}/query",
