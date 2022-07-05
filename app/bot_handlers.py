@@ -152,7 +152,7 @@ def how_many_remain(
             remain = last_card_month['properties']['Remain']['formula'].get('number')
             
             try:
-                remain_converted = get_converted_remain(remain)
+                remain_converted = round(get_converted_remain(remain), ndigits=2)
             except (ValueError, KeyError):
                 logger.error("api returns some bullshit.")
                 message = "конвертер валют вернул какой-то мусор. Конвертация в евро провалилась. :("
