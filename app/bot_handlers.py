@@ -179,11 +179,11 @@ def show_all_type_of_spends(
     update: Update,
     context: CallbackContext
 ):
-    types_of_spends = list(map(lambda item: item["title"], types_of_spends.values()))
+    types = list(map(lambda item: item["title"], types_of_spends.values()))
     
     message = "Все категории: \n"
     
-    for type_of_spend in types_of_spends:
+    for type_of_spend in types:
         message += f"- {type_of_spend} \n"
     
     context.bot.send_message(chat_id=update.effective_chat.id, text=message)
