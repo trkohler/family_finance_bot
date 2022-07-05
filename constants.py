@@ -13,6 +13,7 @@ test_chat_id = -1001171091439
 DATABASE_ID = "a27c68e4c1d8481c913b2d4fabefc4c9"
 
 RAPID_API_URL = "https://currency-converter5.p.rapidapi.com/currency/convert"
+MONOBANK_API_URL = "https://api.monobank.ua/bank/currency"
 
 NOTION_URL_MAP = {
     "query_db": f"https://api.notion.com/v1/databases/{DATABASE_ID}/query",

@@ -7,6 +7,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 from constants import (
+    MONOBANK_API_URL,
     RAPID_API_URL,
     types_of_spends,
 )
@@ -29,32 +30,40 @@ def identify_type_of_spend(title: str) -> dict:
     return type_of_spend
 
 def get_converted_sum(sum: float) -> float:
-    request_url = RAPID_API_URL
-    querystring = {"format":"json","from":"EUR","to":"UAH","amount":f"{sum}"}
+    request_url = MONOBANK_API_URL
     response = requests.request(
         "GET",
         request_url,
-        headers=init_headers_convert_currency(),
-        params=querystring
     )
-    amount = response.json()['rates']['UAH']['rate_for_amount']
+    all_currencies = response.json()
+    
+    euro_to_uah = next(filter(
+        lambda item: item["currencyCodeA"] == 978 and item["currencyCodeB"] == 980,
+        all_currencies
+    ))
+    
+    rate_sell = euro_to_uah["rateSell"]
+    amount = sum * rate_sell
 
-    return float(amount)
+    return amount
 
 def get_converted_remain(sum: float) -> float:
-    request_url = RAPID_API_URL
-    querystring = {"format":"json","from":"UAH","to":"EUR","amount":f"{sum}"}
+    request_url = MONOBANK_API_URL
     response = requests.request(
         "GET",
         request_url,
-        headers=init_headers_convert_currency(),
-        params=querystring
     )
-    logger.info("response: %s", response.json())
+    all_currencies = response.json()
+    
+    euro_to_uah = next(filter(
+        lambda item: item["currencyCodeA"] == 978 and item["currencyCodeB"] == 980,
+        all_currencies
+    ))
+    
+    rate_sell = euro_to_uah["rateSell"]
+    amount = sum / rate_sell
 
-    amount = response.json()['rates']['EUR']['rate_for_amount']
-
-    return float(amount)
+    return amount
 
 
 def make_notion_card(
