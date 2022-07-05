@@ -16,7 +16,7 @@ from telegram.ext import (
 )
 from werkzeug.wrappers import Response
 
-from app.handlers_connect import remain_handler, notion_handler
+from app.handlers_connect import remain_handler, notion_handler, categories_handler
 from constants import telegram_token
 
 logging.basicConfig(
@@ -29,6 +29,7 @@ bot = Bot(token=telegram_token)
 dispatcher = updater.dispatcher
 dispatcher.add_handler(remain_handler)
 dispatcher.add_handler(notion_handler)
+dispatcher.add_handler(categories_handler)
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 8080))
