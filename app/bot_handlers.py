@@ -8,7 +8,6 @@ from telegram.ext import CallbackContext
 
 from constants import (
     MONOBANK_API_URL,
-    RAPID_API_URL,
     types_of_spends,
 )
 from app.notion import (
@@ -18,9 +17,10 @@ from app.notion import (
     prepare_query_kwargs,
     notion,
 )
-from utils.utils import init_headers_convert_currency
 
 logger = logging.getLogger(__name__)
+
+cache = dict()
 
 def identify_type_of_spend(title: str) -> dict:
     type_of_spend = next(filter(
@@ -30,37 +30,47 @@ def identify_type_of_spend(title: str) -> dict:
     return type_of_spend
 
 def get_converted_sum(sum: float) -> float:
-    request_url = MONOBANK_API_URL
-    response = requests.request(
-        "GET",
-        request_url,
-    )
-    all_currencies = response.json()
+    rate_sell = cache.get("rate_sell")
     
-    euro_to_uah = next(filter(
-        lambda item: item["currencyCodeA"] == 978 and item["currencyCodeB"] == 980,
-        all_currencies
-    ))
+    if not rate_sell:
+        request_url = MONOBANK_API_URL
+        response = requests.request(
+            "GET",
+            request_url,
+        )
+        all_currencies = response.json()
+        
+        euro_to_uah = next(filter(
+            lambda item: item["currencyCodeA"] == 978 and item["currencyCodeB"] == 980,
+            all_currencies
+        ))
+        
+        rate_sell = euro_to_uah["rateSell"]
+        cache["rate_sell"] = rate_sell
     
-    rate_sell = euro_to_uah["rateSell"]
     amount = sum * rate_sell
 
     return amount
 
 def get_converted_remain(sum: float) -> float:
-    request_url = MONOBANK_API_URL
-    response = requests.request(
-        "GET",
-        request_url,
-    )
-    all_currencies = response.json()
+    rate_sell = cache.get("rate_sell")
     
-    euro_to_uah = next(filter(
-        lambda item: item["currencyCodeA"] == 978 and item["currencyCodeB"] == 980,
-        all_currencies
-    ))
+    if not rate_sell:
+        request_url = MONOBANK_API_URL
+        response = requests.request(
+            "GET",
+            request_url,
+        )
+        all_currencies = response.json()
+        
+        euro_to_uah = next(filter(
+            lambda item: item["currencyCodeA"] == 978 and item["currencyCodeB"] == 980,
+            all_currencies
+        ))
+        
+        rate_sell = euro_to_uah["rateSell"]
+        cache["rate_sell"] = rate_sell
     
-    rate_sell = euro_to_uah["rateSell"]
     amount = sum / rate_sell
 
     return amount
