@@ -151,12 +151,7 @@ def how_many_remain(
                     f"осталось {remain} "
                     f"euro \n"
                 )
-            else:
-                message += (
-                    f"По категории {type_of_spend['title']} "
-                    f"в этом месяце потрачено {-remain} "
-                    f"euro \n"
-                )
+
     if message:
         context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
