@@ -26,11 +26,9 @@ types_of_spends = dict(
         title="Расходники",
         autoadd=True,
         period_map={
-            5: 3000,
-            15: 2000,
-            23: 3000
+            1: 155,
+            15: 155,
         },
-        economy_flag=False,
         remain=True
     ),
     strannyi_rashody=dict(
@@ -38,37 +36,16 @@ types_of_spends = dict(
         title="Странные расходы",
         autoadd=True,
         period_map={
-            5: 3000,
-            15: 2000,
-            23: 3000
+            1: 250,
+            15: 250,
         },
-        economy_flag=False,
         remain=True
-    ),
-    medrashody=dict(
-        id="ab08b183-ee2e-4d34-bee3-772e5a6a069a",
-        title="медрасходы",
-        autoadd=False,
-        period_map=None,
-        economy_flag=False,
-        remain=False
     ),
     ekstrennyi_rashody=dict(
         id="7f39e4c2-db17-42d9-91c1-8c7a7be224f6",
         title="Экстренные расходы",
         autoadd=False,
         period_map=None,
-        economy_flag=False,
-        remain=False
-    ),
-    kredity=dict(
-        id="c2a445a7-fee4-4e1e-a7af-6d1401e5d6d7",
-        title="Кредиты",
-        autoadd=True,
-        period_map={
-            5: 12000,
-        },
-        economy_flag=False,
         remain=False
     ),
     prihod=dict(
@@ -76,7 +53,6 @@ types_of_spends = dict(
         title="Приход",
         autoadd=False,
         period_map=None,
-        economy_flag=False,
         remain=False
     ),
     prioritetnyi_rashody=dict(
@@ -84,7 +60,6 @@ types_of_spends = dict(
         title="Приоритетные расходы",
         autoadd=False,
         period_map=None,
-        economy_flag=False,
         remain=False
     ),
     arenda=dict(
@@ -92,17 +67,23 @@ types_of_spends = dict(
         title="Аренда",
         autoadd=True,
         period_map={
-            5: 7000,
+            1: 1100,
         },
-        economy_flag=False,
-        remain=False
+        remain=True
     ),
     is_sekonomlennogo=dict(
         id="b01d729c-6451-46ef-ab07-bcd0ad0fef27",
         title="Из сэкономленного",
         autoadd=False,
         period_map=None,
-        economy_flag=True,
+        remain=True
+    ),
+    ukrainian_commitment=dict(
+        id="M?[|",
+        title="Обязательства в Украине",
+        period_map={
+            1: 310,
+        },
         remain=True
     )
 )
