@@ -9,7 +9,7 @@ from utils.utils import init_headers
 
 headers = init_headers()
 notion = Client(auth=notion_secret)
-period_starts_days = [5, 15, 23]
+period_starts_days = [1, 15] # there is no usage of it
 
 
 def make_bullet_points(*args: typing.List[str]) -> typing.List[typing.Dict[str, typing.Any]]:
@@ -40,7 +40,7 @@ def make_bullet_points(*args: typing.List[str]) -> typing.List[typing.Dict[str, 
 def notion_page_builder(
         title: str,
         tag_id: str,
-        sum_of_spend: int,
+        sum_of_spend: float,
         remain_value: int,
         remain_flag: typing.Optional[bool],
         bullets: typing.Optional[typing.List[str]],

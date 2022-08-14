@@ -29,6 +29,7 @@ def identify_type_of_spend(title: str) -> dict:
     ))
     return type_of_spend
 
+# @deprecated
 def get_converted_sum(sum: float) -> float:
     rate_sell = cache.get("rate_sell")
     
@@ -52,6 +53,7 @@ def get_converted_sum(sum: float) -> float:
 
     return amount
 
+# @deprecated
 def get_converted_remain(sum: float) -> float:
     rate_sell = cache.get("rate_sell")
     
@@ -107,15 +109,6 @@ def make_notion_card(
             return
         
         sum_of_spend += float(price[0])
-    
-    converted_from_euro = 0.0
-    try:
-        converted_from_euro = get_converted_sum(sum_of_spend)
-    except ValueError:
-        logger.error("api returns some bullshit.")
-        message = "конвертер валют вернул какой-то мусор. Конвертация в евро провалилась. Придется завести вручную :("
-        context.bot.send_message(chat_id=update.effective_chat.id, text=message)
-        return
 
     res = notion.databases.query(
         **prepare_query_kwargs(title)
@@ -126,7 +119,7 @@ def make_notion_card(
     notion_page = notion_page_builder(
         title,
         type_of_spend["id"],
-        int(round(converted_from_euro)),
+        sum_of_spend,
         remain_value=remain_value,
         bullets=tokens[1:],
         remain_flag=remain_flag
@@ -151,25 +144,17 @@ def how_many_remain(
             logger.info("the card exist!")
             remain = last_card_month['properties']['Remain']['formula'].get('number')
             
-            try:
-                remain_converted = round(get_converted_remain(remain), ndigits=2)
-            except (ValueError, KeyError):
-                logger.error("api returns some bullshit.")
-                message = "конвертер валют вернул какой-то мусор. Конвертация в евро провалилась. :("
-                context.bot.send_message(chat_id=update.effective_chat.id, text=message)
-                return
-            
             remain_flag = type_of_spend["remain"]
-            if remain_converted and remain_flag:
+            if remain_flag:
                 message += (
                     f"По категории {type_of_spend['title']} "
-                    f"осталось {remain_converted} "
+                    f"осталось {remain} "
                     f"euro \n"
                 )
-            elif remain_converted and not remain_flag:
+            else:
                 message += (
                     f"По категории {type_of_spend['title']} "
-                    f"в этом месяце потрачено {-remain_converted} "
+                    f"в этом месяце потрачено {-remain} "
                     f"euro \n"
                 )
     if message:
